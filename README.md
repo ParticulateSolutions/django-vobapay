@@ -57,4 +57,4 @@ vobapay_transaction = vobapay_wrapper.start_transaction(
 
 ## Copyright and license
 
-Copyright 2021 Particulate Solutions GmbH, under [MIT license](https://github.com/ParticulateSolutions/django-vobapay/blob/master/LICENSE).
+Copyright 2024 Particulate Solutions GmbH, under [MIT license](https://github.com/ParticulateSolutions/django-vobapay/blob/master/LICENSE).

@@ -31,7 +31,7 @@ There are just two steps needed to install django-vobapay:
     from django.conf.urls import include, url
 
     urlpatterns = [
-        url('^girocheckout/', include('django_vobapay.urls')),
+        url('^vobapay/', include('django_vobapay.urls')),
     ]
 	```
 
@@ -46,7 +46,7 @@ There are just two steps needed to install django-vobapay:
 
 ```python
 from django_vobapay.wrappers import VobapayWrapper
-vobapay_wrapper = GiropayWrapper()
+vobapay_wrapper = VobapayWrapper()
 
 vobapay_transaction = vobapay_wrapper.start_transaction(
     merchant_tx_id='first-test',

@@ -46,6 +46,8 @@ class Migration(migrations.Migration):
                 ('response_msg', models.TextField(null=True, verbose_name='msg field from vobapay response')),
                 ('raw_response', models.TextField(null=True, verbose_name='raw response')),
                 ('transaction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='responses', to='django_vobapay.VobapayTransaction')),
+                ('request_data', models.TextField(blank=True, null=True, verbose_name='Request data')),
+                ('request_url', models.CharField(blank=True, max_length=255, null=True, verbose_name='Request url')),
             ],
             options={
                 'verbose_name': 'Vobapay Response',

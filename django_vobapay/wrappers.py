@@ -138,7 +138,9 @@ class VobapayWrapper(object):
                 transaction=vobapay_transaction,
                 response_code=response_dict.get('rc'),
                 response_msg=response_dict.get('msg'),
-                raw_response=str(response.__dict__)
+                raw_response=str(response.__dict__),
+                request_url=VOBAPAY_API_URL,
+                request_data=str(data),
             )
         else:
             logger.error(_("no reference given by response"))
@@ -168,7 +170,9 @@ class VobapayWrapper(object):
             transaction=vobapay_transaction,
             response_code=response_dict.get('rc'),
             response_msg=response_dict.get('msg'),
-            raw_response=str(response.__dict__)
+            raw_response=str(response.__dict__),
+            request_url=VOBAPAY_API_STATUS_URL,
+            request_data=str(data),
         )
         if response_dict.get('rc') == 0:
             update_fields = ["backend_tx_id", "result_payment"]

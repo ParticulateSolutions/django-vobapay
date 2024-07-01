@@ -72,6 +72,9 @@ class VobapayResponse(models.Model):
     response_code = models.IntegerField(_("rc field from vobapay response"), null=True)
     response_msg = models.TextField(_("msg field from vobapay response"), null=True)
     raw_response = models.TextField(_("raw response"), null=True)
+    # original request url & data that caused the response
+    request_url = models.CharField(_("Request url"), max_length=255, null=True, blank=True)
+    request_data = models.TextField(_("Request data"), null=True, blank=True)
 
     objects = models.Manager()
 

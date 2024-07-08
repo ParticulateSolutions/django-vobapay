@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View, RedirectView
 
 from django_vobapay.constants import RESULT_PAYMENT_STATUS
-from django_vobapay.models import VobapayTransaction
+from django_vobapay.models import VobapayTransaction, VobapayResponse
 
 from django_vobapay.wrappers import VobapayWrapper
 
@@ -51,6 +51,13 @@ class NotifyVobapayView(View):
         vobapay_transaction.result_payment = int(get_params['gcResultPayment'])
         vobapay_transaction.backend_tx_id = get_params['gcBackendTxId']
         vobapay_transaction.save()
+
+        VobapayResponse.objects.create(
+            transaction=vobapay_transaction,
+            response_code=get_params['gcResultPayment'],
+            raw_response=str(request.GET.dict()),
+            request_url=request.path,
+        )
 
         return self.handle_updated_transaction(vobapay_transaction=vobapay_transaction)
 
@@ -100,6 +107,13 @@ class VobapayReturnView(RedirectView):
         vobapay_transaction.result_payment = int(get_params['gcResultPayment'])
         vobapay_transaction.backend_tx_id = get_params['gcBackendTxId']
         vobapay_transaction.save()
+
+        VobapayResponse.objects.create(
+            transaction=vobapay_transaction,
+            response_code=get_params['gcResultPayment'],
+            raw_response=str(self.request.GET.dict()),
+            request_url=self.request.path,
+        )
 
         if not vobapay_transaction.valid_payment:
             return self.get_cancel_url(vobapay_transaction)

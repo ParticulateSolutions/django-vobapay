@@ -79,7 +79,7 @@ class VobapayResponse(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f"Response {self.id}: {self.response_code} - {self.response_msg}"
+        return f"Response {self.id} - code: {self.response_code} {'Error msg: ' + str(self.response_msg) if self.response_msg else 'Success'}"
 
     class Meta:
         verbose_name = _("Vobapay Response")

@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_vobapay import settings as django_vobapay_settings
+from django_vobapay.constants import RESULT_PAYMENT_STATUS
 
 
 @python_2_unicode_compatible
@@ -79,7 +80,7 @@ class VobapayResponse(models.Model):
     objects = models.Manager()
 
     def __str__(self):
-        return f"Response {self.id} - code: {self.response_code} {'Error msg: ' + str(self.response_msg) if self.response_msg else 'Success'}"
+        return f"Response {self.id} - code: {RESULT_PAYMENT_STATUS.get(self.response_code, self.response_code + ' Unknown')}"
 
     class Meta:
         verbose_name = _("Vobapay Response")

@@ -71,7 +71,7 @@ class NotifyVobapayView(View):
         """
         if vobapay_transaction.result_payment not in expected_statuses:
             logger.error(
-                _("Vobapay Result faulty: {}").format(RESULT_PAYMENT_STATUS[vobapay_transaction.result_payment] if vobapay_transaction.result_payment in RESULT_PAYMENT_STATUS else vobapay_transaction.result_payment)
+                _("Vobapay Result faulty: {}").format(RESULT_PAYMENT_STATUS.get(vobapay_transaction.result_payment, vobapay_transaction.result_payment))
             )
             return HttpResponse(status=400)
         return HttpResponse(status=200)

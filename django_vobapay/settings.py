@@ -15,10 +15,10 @@ class VOBAPAY_PAYMENT_METHODS:
 
 VOBAPAY_VALID_TRANSACTION_STATUSES = [4000]
 
-# TODO currently we only know the staging URL
-VOBAPAY_API_BASE_URL = getattr(settings, 'VOBAPAY_API_BASE_URL', 'https://staging-paymentconverter.vobapay.de/vobapaycheckout/api/')
-VOBAPAY_API_URL = VOBAPAY_API_BASE_URL + 'transaction/start'
-VOBAPAY_API_STATUS_URL = VOBAPAY_API_BASE_URL + 'transaction/status'
+VOBAPAY_API_BASE_URL_PROD = getattr(settings, 'VOBAPAY_API_BASE_URL_PROD', 'https://paymentconverter.vobapay.de/vobapaycheckout/api/')
+VOBAPAY_API_BASE_URL_SANDBOX = getattr(settings, 'VOBAPAY_API_BASE_URL_SANDBOX', 'https://staging-paymentconverter.vobapay.de/vobapaycheckout/api/')
+VOBAPAY_API_URL = lambda sandbox=True: f'{VOBAPAY_API_BASE_URL_SANDBOX if sandbox else VOBAPAY_API_BASE_URL_PROD}transaction/start'
+VOBAPAY_API_STATUS_URL = lambda sandbox=True: f'{VOBAPAY_API_BASE_URL_SANDBOX if sandbox else VOBAPAY_API_BASE_URL_PROD}transaction/status'
 
 # checkout urls
 VOBAPAY_RETURN_URL = getattr(settings, 'VOBAPAY_RETURN_URL', '/vobapay/return/')

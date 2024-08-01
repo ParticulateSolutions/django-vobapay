@@ -44,6 +44,8 @@ There are just two steps needed to install django-vobapay:
 
 VobapayWrapper acts as the interface to the Vobapay API. It provides methods to start a transaction and to check the status of a transaction.
 
+Note that `SANDBOX` is enabled by default. Please set it to `False` in order to use the live system.
+
 ### Code example:
 
 ```python
@@ -56,6 +58,7 @@ vobapay_wrapper = VobapayWrapper(
 		'PROJECT_ID': '1010',
 		'PROJECT_PASSWORD': bytes('some-pass', encoding='UTF-8'),
 		'TYPE': 'PAYPAL',
+		'SANDBOX': False,
 	}
 )
 
@@ -124,6 +127,7 @@ vobapay_wrapper = VobapayWrapper(
 		'MERCHANT_ID': '123456',
 		'PROJECT_ID': '1010',
 		'PROJECT_PASSWORD': bytes('some-pass', encoding='UTF-8'),
+		'SANDBOX': True,
 	}
 )
 vobapay_transaction.refresh_from_vobapay(vobapay_wrapper=vobapay_wrapper)

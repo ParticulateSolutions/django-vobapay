@@ -16,10 +16,7 @@ class VobapayWrapper(object):
     interface_version = 'django_vobapay_v{}'.format(DJANGO_VOBAPAY_VERSION)
 
     api_url = None
-    transaction_start_url = None
-    external_payment_url = None
-
-    issuer_url = None
+    sandbox = True
 
     payment = None
     payment_type = None
@@ -35,6 +32,7 @@ class VobapayWrapper(object):
             if payment:
                 self.payment = payment
                 self.payment_type = self.payment.get('TYPE')
+                self.sandbox = self.payment.get('SANDBOX', True)
             else:
                 return None
         except:
@@ -107,7 +105,7 @@ class VobapayWrapper(object):
         data.update(optional_data or {})
 
         # make api call with given data
-        response = self.call_api(url=VOBAPAY_API_URL, data=data)
+        response = self.call_api(url=VOBAPAY_API_URL(self.sandbox), data=data)
 
         response_hash = response.headers.get('hash')
         response_dict = response.json()
@@ -139,7 +137,7 @@ class VobapayWrapper(object):
                 response_code=response_dict.get('rc'),
                 response_msg=response_dict.get('msg'),
                 raw_response=str(response.__dict__),
-                request_url=VOBAPAY_API_URL,
+                request_url=VOBAPAY_API_URL(self.sandbox),
                 request_data=str(data),
             )
         else:
@@ -157,7 +155,7 @@ class VobapayWrapper(object):
         data['merchantId'] = vobapay_transaction.merchant_id
         data['projectId'] = vobapay_transaction.project_id
         data['reference'] = vobapay_transaction.reference
-        response = self.call_api(url=VOBAPAY_API_STATUS_URL, data=data)
+        response = self.call_api(url=VOBAPAY_API_STATUS_URL(self.sandbox), data=data)
         response_hash = response.headers.get('hash')
         response_dict = response.json()
         response_text = response.text
@@ -171,7 +169,7 @@ class VobapayWrapper(object):
             response_code=response_dict.get('rc'),
             response_msg=response_dict.get('msg'),
             raw_response=str(response.__dict__),
-            request_url=VOBAPAY_API_STATUS_URL,
+            request_url=VOBAPAY_API_STATUS_URL(self.sandbox),
             request_data=str(data),
         )
         if response_dict.get('rc') == 0:

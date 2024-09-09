@@ -1,4 +1,6 @@
 import logging
+from typing import Optional
+import uuid
 import requests
 from collections import OrderedDict
 from django.utils.translation import gettext_lazy as _, ugettext
@@ -70,13 +72,16 @@ class VobapayWrapper(object):
         data_hash = hmac.new(self.payment['PROJECT_PASSWORD'], data_text.encode("utf-8"), hashlib.md5).hexdigest()
         return data_hash
 
-    def start_transaction(self, merchant_tx_id, amount, purpose,
-                          currency='EUR',
-                          redirect_url=VOBAPAY_RETURN_URL,
-                          notify_url=VOBAPAY_NOTIFICATION_URL,
-                          success_url=VOBAPAY_SUCCESS_URL,
-                          error_url=VOBAPAY_ERROR_URL,
-                          optional_data=None):
+    def start_transaction(self,
+                          merchant_tx_id: str, 
+                          amount: int, 
+                          purpose: Optional[str] = None,
+                          currency: str = 'EUR',
+                          redirect_url: str = VOBAPAY_RETURN_URL,
+                          notify_url: str = VOBAPAY_NOTIFICATION_URL,
+                          success_url: str = VOBAPAY_SUCCESS_URL,
+                          error_url: str = VOBAPAY_ERROR_URL,
+                          optional_data: Optional[dict] = None):
         """
         vobapay transaction. The data needs to be ordered like in the API docs, otherwise the hash will be invalid.
         :param merchant_tx_id:
@@ -91,6 +96,12 @@ class VobapayWrapper(object):
         :return: response dict from vobapay
         """
 
+        if not purpose:
+            purpose = str(uuid.uuid4())
+
+        if not optional_data:
+            optional_data = dict()
+
         # currently the required data is the same for all payment methods.
         data = OrderedDict()
         data['merchantId'] = self.payment.get('MERCHANT_ID')
@@ -102,7 +113,7 @@ class VobapayWrapper(object):
         data['urlRedirect'] = redirect_url
         data['urlNotify'] = notify_url
 
-        data.update(optional_data or {})
+        data.update(optional_data)
 
         # make api call with given data
         response = self.call_api(url=VOBAPAY_API_URL(self.sandbox), data=data)

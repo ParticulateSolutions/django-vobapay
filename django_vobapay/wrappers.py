@@ -3,7 +3,7 @@ from typing import Optional
 import uuid
 import requests
 from collections import OrderedDict
-from django.utils.translation import gettext_lazy as _, ugettext
+from django.utils.translation import gettext_lazy as _
 
 from django_vobapay.models import VobapayResponse
 from django_vobapay.settings import *

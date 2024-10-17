@@ -1,15 +1,9 @@
-from __future__ import unicode_literals
-
-import logging
-
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_vobapay import settings as django_vobapay_settings
 from django_vobapay.constants import RESULT_PAYMENT_STATUS
 
 
-@python_2_unicode_compatible
 class VobapayTransaction(models.Model):
     created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
 
@@ -66,7 +60,6 @@ class VobapayTransaction(models.Model):
         return None
 
 
-@python_2_unicode_compatible
 class VobapayResponse(models.Model):
     created_at = models.DateTimeField(_("created_at"), auto_now_add=True)
     transaction = models.ForeignKey(VobapayTransaction, on_delete=models.CASCADE, related_name='responses')
